@@ -1,0 +1,50 @@
+{
+    "active": true,
+    "bucket": {
+        "id": "64bea30b364622000df435d3",
+        "name": "He_003"
+    },
+    "connector": "605c9654da971900114d4550",
+    "created_at": "2023-07-24T16:12:59.084Z",
+    "description": "Use this custom connector if your device using Helium doesn\u2019t show up in the list. No parser is added.",
+    "id": "64bea30b364622000df435d3",
+    "last_input": "2023-08-12T16:00:48.966Z",
+    "name": "He_003",
+    "network": "602275f9fc48a40018510a8a",
+    "payload_decoder": "Ly8gQWRkIGlnbm9yYWJsZSB2YXJpYWJsZXMgaW4gdGhpcyBhcnJheS4KY29uc3QgaWdub3JlX3ZhcnMgPSBbJ2FwcGxpY2F0aW9uX2lkJywKICdkb3dubGlua19rZXknLAogJ2ZjbnQnLAogJ2ZyZXF1ZW5jeScsCiAnZGV2aWNlX2lkJywKICdkYXRhX3JhdGVfaW5kZXgnLAogJ2xvcmFfc3ByZWFkaW5nX2ZhY3RvcicsCiAnbG9yYV9jb2RpbmdfcmF0ZScsCiAndGltZXN0YW1wJywKICdJbnRlcnJ1cHRfZmxhZycsCiAnZnBvcnQnLAogJ2xvcmFfYmFuZHdpZHRoJywKICdTZW5zb3JfZmxhZycsCiAnY29kaW5nX3JhdGUnLAogJ2ZybV9wYXlsb2FkJywKICdyc3NpJywKICdUZW1wY19kczE4YjIwJywKICdzbnInLAogJ2RjX25vbmNlJywKICdnYXRld2F5X2V1aScsCiAnbWV0YWRhdGEnLAogJ2RjX2JhbGFuY2UnLAogJ2hvdHNwb3RfMF9jaGFubmVsJywKICdob3RzcG90XzBfZnJlcXVlbmN5JywKICdob3RzcG90XzBfaWQnLAogJ2hvdHNwb3RfMF9sb2NhdGlvbicsCiAnaG90c3BvdF8wX25hbWUnLAogJ2hvdHNwb3RfMF9yZXBvcnRlZF9hdCcsCiAnaG90c3BvdF8wX3Jzc2knLAogJ2hvdHNwb3RfMF9zbnInLAogJ2hvdHNwb3RfMF9zcHJlYWRpbmcnLAogJ2hvdHNwb3RfMF9zdGF0dXMnLAogJ2hvdHNwb3RfMF9ob2xkX3RpbWUnLAogJ2FwcF9ldWknLAogJ2Rldl9ldWknLAogJ2RldmFkZHInLAogJ2Rvd25saW5rX3VybCcsCiAnbmFtZScsCiAncGF5bG9hZCcsCiAncG9ydCcsCiAncmF3X3BhY2tldCcsCiAncmVwbGF5JywKICdyZXBvcnRlZF9hdCcsCiAndHlwZSddOwovL2NvbnN0IGlnbm9yZV92YXJzID0gWydhcHBsaWNhdGlvbl9pZCcsICdkb3dubGlua19rZXknLCAnZmNudCcsICdmcmVxdWVuY3knLCAnZGV2aWNlX2lkJywgJ2RhdGFfcmF0ZV9pbmRleCcsICdsb3JhX3NwcmVhZGluZ19mYWN0b3InLCAnaW50ZXJydXB0X2ZsYWcnLCAnZnBvcnQnLCdsb3JhX2JhbmR3aWR0aCcsJ3NlbnNvcl9mbGFnJywnY29kaW5nX3JhdGUnLCdmcm1fcGF5bG9hZCcsJ3Jzc2knLCd0ZW1wY19kczE4YjIwJywnc25yJywnZ2F0ZXdheV9ldWknXTsKLy8gUmVtb3ZlIHVud2FudGVkIHZhcmlhYmxlcy4KcGF5bG9hZCA9IHBheWxvYWQuZmlsdGVyKHggPT4gIWlnbm9yZV92YXJzLmluY2x1ZGVzKHgudmFyaWFibGUpKTsKCi8vIFlvdSBjYW4gZWRpdCBhbnkgdmFyaWFibGUgdGhhdCdzIGJlaW5nIGFkZGVkIHRvIHlvdXIgZGV2aWNlLgovLyBGb3IgZXhhbXBsZSwgaWYgeW91IG5lZWQgdG8gY29udmVydCBhIHZhcmlhYmxlIGZyb20gRmFocmVpbnRoIHRvIENlbHNpdXMsIHVuY29tbWVudCB0aGUgZm9sbG93aW5nIGNvZGU6Ci8vIGNvbnN0IHRlbXBlcmF0dXJlID0gcGF5bG9hZC5maW5kKHggPT4geC52YXJpYWJsZSA9PT0gInRlbXBlcmF0dXJlIik7Ci8vIGlmICh0ZW1wZXJhdHVyZSkgewovLyAgIHRlbXBlcmF0dXJlLnZhbHVlID0gKDUgLyA5KSAqICh0ZW1wZXJhdHVyZS52YWx1ZSAtIDMyKTsKLy8gICB0ZW1wZXJhdHVyZS51bml0ID0gIkMiOwovLyB9CmNvbnN0IGdyb3VwID0gcGF5bG9hZFswXS5ncm91cDsKcGF5bG9hZC5wdXNoKHsKICB2YXJpYWJsZTogJ2xvY2F0aW9uJywKICB2YWx1ZTogJ0UuIE1pZmZsaW4gJiBCbG91bnQgU3QuICcsCiAgZ3JvdXAsCiAgbG9jYXRpb246IHsgbGF0OiA0My4wODA1NjgwMzAxOTA5NzUsIGxuZzogLTg5LjM3ODA1NDg3NTAzMzU0fSwKfSk7CiBjb25zdCBkaXN0YW5jZSA9IHBheWxvYWQuZmluZCh4ID0+IHgudmFyaWFibGUgPT09ICJ3YXRlcl9sZXZlbCIpOwogaWYgKGRpc3RhbmNlKSB7CiAgIGRpc3RhbmNlLnZhbHVlID0gZGlzdGFuY2UudmFsdWUgKiAwLjAwMzI4MDg7CiAgIGRpc3RhbmNlLnZhbHVlID0gZGlzdGFuY2UudmFsdWUgKyAwLjA0OwogICBkaXN0YW5jZS51bml0ID0gImZ0IjsKIH0KCiA=",
+    "profile": "60d0fd156dc8af0019c9379b",
+    "tags": [
+        {
+            "key": "dev_serial",
+            "value": "He_003"
+        },
+        {
+            "key": "Access",
+            "value": "MSN_User"
+        },
+        {
+            "key": "time_check",
+            "value": "YES"
+        },
+        {
+            "key": "email",
+            "value": "selbig@gmail.com"
+        },
+        {
+            "key": "phone",
+            "value": "16082353216"
+        },
+        {
+            "key": "location",
+            "value": "E. Mifflin and Blount St"
+        },
+        {
+            "key": "device",
+            "value": "Linovision"
+        }
+    ],
+    "updated_at": "2023-08-01T15:51:56.959Z",
+    "visible": true,
+    "type": "immutable",
+    "data_retention": "forever"
+}
