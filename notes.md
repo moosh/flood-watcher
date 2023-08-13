@@ -16,3 +16,6 @@ You should now be able to go to http://localhost for all your open-route needs.
 In general:
 
 docker run -t -i -v $(pwd)/data:/code/data -p 80:8080 openelevation/open-elevation <your command here>
+
+
+* The problem with running this docker container was due to the image data not being located properly after unrar'ing. Because of this no tiles were generated and the server struggled on every request to load the full 5-8GB file.
