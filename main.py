@@ -1,3 +1,4 @@
+# 
 # main.py
 # Copyright (c) 2023 Mooshwerks
 # All Rights Reserved
@@ -6,10 +7,13 @@
 # sensor at E. Mifflin and Blount St. in Madison, WI.
 
 import math
+import json
 import base64
 import requests
 import numpy as np
 from tagoio_sdk import Device
+from stopwatch import stopwatch
+from matplotlib import pyplot as plt
 
 def lat(location):
     return location[0]
@@ -75,14 +79,19 @@ def meters_to_longitude_degrees(current_lon, distance_meters):
     return deg
 
 
-def location_at_distance(location, meters_lat, meters_lon):
+def location_from(location, meters_lat, meters_lon):
     delta_degrees_lat = meters_to_latitude_degrees(lat(location), meters_lat)
     delta_degrees_lon = meters_to_latitude_degrees(lon(location), meters_lon)
     return [lat(location) + delta_degrees_lat, lon(location) + delta_degrees_lon]
 
 
-def get__device_elevation(token):
-    query = f"https://api.open-elevation.com/api/v1/lookup?locations=41.161758,-8.583933"
+def get_location_elevation(location):
+    #endpoint = f"https://api.open-elevation.com/api/v1/lookup?locations={lat(location)},{lon(location)}"
+    endpoint = f"http://localhost/api/v1/lookup?locations={lat(location)},{lon(location)}"
+    #print(endpoint)
+    response = requests.get(endpoint)
+    response_json = response.json()
+    return response_json['results'][0]['elevation']
 
 
 def get_osm_url(coords, zoom_level):
@@ -90,18 +99,53 @@ def get_osm_url(coords, zoom_level):
     return url
 
 
+def percent_done_string(current_value, min_value, max_value):
+    pct_done = int(100 * (current_value - min_value) / (max_value - min_value))
+    progress_bar = ''.join(['=' * pct_done])
+    return f"[{progress_bar:100}]" # lock it 100 characters wide
+
+
 def main():
     token = "ba8d3764-1dc8-46ca-80ca-54aa3aec3297" # He_003 sensor on Bill's tago.io dashboard
-    #get_device_info(token)
-    #get_device_data(token)
     device_location = get_device_location(token)
     orig_url = get_osm_url(device_location, 19)
 
-    moved_location = location_at_distance(device_location, 1, 1)
+    moved_location = location_from(device_location, 10, 0)
     moved_url = get_osm_url(moved_location, 19)
+
+    sw = stopwatch()
+
+    sw.start()
+    device_elevation = get_location_elevation(device_location)
+    sw.stop()
+    print(sw.elapsedMilliseconds())
+
+    moved_elevation = get_location_elevation(moved_location)
+
+    radius = 100 # radius around device location
+    resolution_meters = 30
+    map_size = 2 * radius + 1
+    elevation_map = np.zeros((map_size, map_size))
+    for y_meters in range(-radius, radius + 1):
+        pct_done = percent_done_string(y_meters, -radius, radius)
+        print(pct_done)
+
+        for x_meters in range(-radius, radius + 1):
+            loc = location_from(device_location, y_meters * resolution_meters, x_meters * resolution_meters)
+            # url = get_osm_url(loc, 19)
+            # print(url)
+            ele = get_location_elevation(loc)
+            elevation_map[y_meters + radius][x_meters + radius] = ele - device_elevation
+
+
+    elevation_map = np.flipud(elevation_map)
+    plt.imshow(elevation_map, interpolation='nearest')
+    plt.show()
 
     print(orig_url)
     print(moved_url)
+    print(device_elevation)
+    print(moved_elevation)
 
 
 main()
