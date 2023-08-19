@@ -37,7 +37,7 @@ def get_device_data(token):
     myDevice = Device({ "token": token})
     result = myDevice.getData({
         "query": "last_item",
-        "variable": "frequency",
+        "variable": "water_level",
     })
     print(result)
 
@@ -85,6 +85,26 @@ def location_from(location, meters_lat, meters_lon):
     return [lat(location) + delta_degrees_lat, lon(location) + delta_degrees_lon]
 
 
+def elevations_around_location(location, extent_x1_blocks, extent_x2_blocks, resolution):
+    endpoint = f"http://localhost/api/v1/lookup"
+    post_json = {"locations": []}
+    for block in range(extent_x1_blocks, extent_x2_blocks + 1):
+        delta_meters = block * resolution
+        loc = location_from(location, 0, delta_meters) # x-direction, ie longitude, only!
+        location_json = {"latitude":lat(loc), "longitude":lon(loc)}
+        post_json["locations"].append(location_json)
+
+    out_locations = []
+
+    str = json.dumps(post_json)
+    response = requests.post(endpoint, json = post_json)
+    response_json = response.json()
+    for i in range(0, len(response_json['results'])):
+        out_locations.append(response_json['results'][i]['elevation'])
+
+    return out_locations
+
+
 def get_location_elevation(location):
     #endpoint = f"https://api.open-elevation.com/api/v1/lookup?locations={lat(location)},{lon(location)}"
     endpoint = f"http://localhost/api/v1/lookup?locations={lat(location)},{lon(location)}"
@@ -105,8 +125,31 @@ def percent_done_string(current_value, min_value, max_value):
     return f"[{progress_bar:100}]" # lock it 100 characters wide
 
 
+def main_doof():
+    x = -8
+    res = 3
+
+    xabs = abs(x)
+    xsgn = np.sign(x)
+    m = xsgn * math.floor((xabs + 0.5 * (res-1))/ res)
+
+    xabs = abs(x)
+    xfloor = math.floor(xabs)
+    xsign = np.sign(x)
+    xremainder = math.fmod(xfloor, res)
+    xres = xsign * math.floor(xremainder * res)
+
+    xdivres = xfloor/res
+    print(xres)
+
 def main():
     token = "ba8d3764-1dc8-46ca-80ca-54aa3aec3297" # He_003 sensor on Bill's tago.io dashboard
+    
+    print("--- output device info ---")
+    out = get_device_data(token)
+    print(out)
+    print("--------------------------")
+
     device_location = get_device_location(token)
     orig_url = get_osm_url(device_location, 19)
 
@@ -118,28 +161,35 @@ def main():
     sw.start()
     device_elevation = get_location_elevation(device_location)
     sw.stop()
-    print(sw.elapsedMilliseconds())
+    print(f"time to query one location's elevation: {sw.elapsedMilliseconds():.3f}ms")
 
     moved_elevation = get_location_elevation(moved_location)
 
-    radius = 100 # radius around device location
-    resolution_meters = 30
-    map_size = 2 * radius + 1
+    radius_in_blocks = 100 # radius around device location (in resolution "blocks")
+    resolution_meters = 10
+    map_size = 2 * radius_in_blocks + 1
     elevation_map = np.zeros((map_size, map_size))
-    for y_meters in range(-radius, radius + 1):
-        pct_done = percent_done_string(y_meters, -radius, radius)
-        print(pct_done)
+    for y_block in range(-radius_in_blocks, radius_in_blocks + 1):
+        sw.stop()
+        pct_done = percent_done_string(y_block, -radius_in_blocks, radius_in_blocks)
+        print(f"{pct_done} {map_size / sw.elapsedSeconds()} queries/sec")
+        sw.start()
 
-        for x_meters in range(-radius, radius + 1):
-            loc = location_from(device_location, y_meters * resolution_meters, x_meters * resolution_meters)
-            # url = get_osm_url(loc, 19)
-            # print(url)
-            ele = get_location_elevation(loc)
-            elevation_map[y_meters + radius][x_meters + radius] = ele - device_elevation
+        y_loc = location_from(device_location, y_block * resolution_meters, 0)
+        row_elevations = elevations_around_location(y_loc, -radius_in_blocks, radius_in_blocks, resolution_meters)
+        for i in range(0, len(row_elevations)):
+            elevation_map[y_block + radius_in_blocks][i] = row_elevations[i] - device_elevation
+
+    # level_in_meters = 1
+    # for y in range(0, map_size):
+    #     for x in range(0,map_size):
+    #         if elevation_map[y][x] > device_elevation + level_in_meters:
+    #             elevation_map[y][x] 
 
 
     elevation_map = np.flipud(elevation_map)
     plt.imshow(elevation_map, interpolation='nearest')
+    plt.plot(map_size/2, map_size/2, marker='*', color="white")
     plt.show()
 
     print(orig_url)
