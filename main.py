@@ -180,15 +180,21 @@ def main():
         for i in range(0, len(row_elevations)):
             elevation_map[y_block + radius_in_blocks][i] = row_elevations[i] - device_elevation
 
-    # level_in_meters = 1
-    # for y in range(0, map_size):
-    #     for x in range(0,map_size):
-    #         if elevation_map[y][x] > device_elevation + level_in_meters:
-    #             elevation_map[y][x] 
-
-
     elevation_map = np.flipud(elevation_map)
+
+    level_in_meters = 1
+    overlay_map = elevation_map.copy()
+    for y in range(0, map_size):
+        for x in range(0,map_size):
+            if elevation_map[y][x] - level_in_meters <= 0:
+                overlay_map[y][x] = 1
+            else:
+                overlay_map[y][x] = 0
+
+
     plt.imshow(elevation_map, interpolation='nearest')
+    plt.imshow(overlay_map, interpolation='nearest', cmap='Reds', alpha = 0.4)
+
     plt.plot(map_size/2, map_size/2, marker='*', color="white")
     plt.show()
 
